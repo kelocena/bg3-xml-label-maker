@@ -1,5 +1,3 @@
-
-## build loca db? Would be nice to have a dictionary to index faster than iterating through the loca every time.
 import io
 import json
 from bs4 import BeautifulSoup
@@ -16,15 +14,14 @@ def build_loca_index():
             text = tag.string
             loca_index[handle] = text
     
-    with open("loca_index.txt",  mode="w", encoding="utf-8") as f:
+    with open("indices/loca_index.txt",  mode="w", encoding="utf-8") as f:
         f.write(json.dumps(loca_index))
 
-    print('loca file indexed and written to loca_index.txt as JSON')
+    print('loca file indexed and written to indices/loca_index.txt as JSON')
 # build_loca_index()
 
 def test_read():
     with io.open("loca_index.txt", mode="r", encoding="utf-8") as f:
-        # print('txt', f.read())
         li = json.loads(f.read())
         print(li['hffff8e50gcd5ag4d97gbc03gf783776542b4'])
 
