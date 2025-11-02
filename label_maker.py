@@ -25,9 +25,9 @@ class LabelMaker:
     # Save as new file? idk? w/e?
 
     def add_labels(self):
-        print('Begin labeling %s', self.filename)
+        print('Begin labeling', self.filename)
 
-        # Edit the file prefix here
+        # EDIT the file prefix here
         filepath = 'resources/' + self.filename
         with io.open(filepath, mode="r", encoding="utf-8") as f:
             soup = BeautifulSoup(f, 'xml')
@@ -43,11 +43,11 @@ class LabelMaker:
 
 
         self.save_labeled_xml()
-        print(print('Finish labeling %s', self.filename))
+        print(print('Finish labeling', self.filename))
 
     def save_labeled_xml(self):
         
-        # Edit the output path as desired
+        # EDIT the output path as desired
         filepath = 'labeled/' + self.filename
         with open(filepath,  mode="w", encoding="utf-8") as f:
             f.write(self.labeled_soup)
@@ -58,7 +58,7 @@ class LabelMaker:
 
     # for tags and flags, they would be attributes of id=Tag and id=Flag respectively
 
-# pass the file name in here
+# EDIT pass the file name in here
 lm = LabelMaker('Karlach_InParty.lsx')
 
 lm.add_labels()
