@@ -53,7 +53,7 @@ class LabelMaker:
             f.write(self.labeled_soup)
 
     def get_taggedtext(self, tag):
-        return tag.has_attr("handle") and tag.has_attr("type") and tag['type'] == "TranslatedString"
+        return tag.has_attr("handle") and tag.has_attr("type") and tag['type'] == "TranslatedString" and tag['id'] == "TagText"
 
 
     # for tags and flags, they would be attributes of id=Tag and id=Flag respectively
