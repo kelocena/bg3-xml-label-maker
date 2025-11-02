@@ -35,7 +35,7 @@ class LabelMaker:
                 handle = tagtext['handle']
                 eng_line = self.loca_db[handle]
 
-                new_comment = Comment(eng_line)
+                new_comment = Comment(" " + eng_line + " ")
                 tagtext.insert_before(new_comment)
             
             formatter = CustomFormatter(indent=4)
