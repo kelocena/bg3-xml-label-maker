@@ -17,13 +17,6 @@ class LabelMaker:
             self.loca_db = json.loads(f.read())
             self.filename = filename
 
-    # open and read the file we want to label
-    # look for attribute tags with id TagText and TranslatedString, and a handle.
-    # pull from the handle 'class' to get the loca handle ID
-    # Get English line from DB
-    # add new line to XML (below might be easier but w/e) with the English
-    # Save as new file? idk? w/e?
-
     def add_labels(self):
         print('Begin labeling', self.filename)
 
