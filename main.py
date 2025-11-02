@@ -21,7 +21,7 @@ def build_loca_index():
 # build_loca_index()
 
 def test_read():
-    with io.open("loca_index.txt", mode="r", encoding="utf-8") as f:
+    with io.open("indices/loca_index.txt", mode="r", encoding="utf-8") as f:
         li = json.loads(f.read())
         print(li['hffff8e50gcd5ag4d97gbc03gf783776542b4'])
 
