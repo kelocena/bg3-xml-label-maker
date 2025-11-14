@@ -25,8 +25,47 @@ build_loca_index()
 
 # Check it worked
 def test_read():
-    with io.open("indices/loca_index.txt", mode="r", encoding="utf-8") as f:
-        li = json.loads(f.read())
-        print(li['hffff8e50gcd5ag4d97gbc03gf783776542b4'])
+    with io.open("indices/flag_index.txt", mode="r", encoding="utf-8") as f:
+        idx = json.loads(f.read())
+        print(idx['fff32281-b937-22d0-b283-29e547cb2765'])
 
-# test_read()
+test_read()
+
+# functions to index the tags and flags
+
+def build_flag_index():
+    flag_index = {}
+
+    print('Building Flag index...')
+    with open("resources/flags_list.txt", mode="r", encoding="utf-8") as fl:
+        for f in fl:
+            (uuid, name) = separate_uuid_and_name(f)
+
+            flag_index[uuid] = name
+    
+    with open("indices/flag_index.txt",  mode="w", encoding="utf-8") as fi:
+        fi.write(json.dumps(flag_index))
+
+def build_tag_index():
+    tag_index = {}
+
+    print('Building Tag index...')
+    with open("resources/tags_list.txt", mode="r", encoding="utf-8") as tl:
+        for t in tl:
+            (uuid, name) = separate_uuid_and_name(t)
+
+            tag_index[uuid] = name
+    
+    with open("indices/tag_index.txt",  mode="w", encoding="utf-8") as ti:
+        ti.write(json.dumps(tag_index))
+
+def separate_uuid_and_name(flag):
+    split_flag = flag.split('_')
+
+    uuid = split_flag.pop().strip()
+    name = '_'.join(split_flag)
+
+    return (uuid, name)
+
+build_flag_index()
+build_tag_index()

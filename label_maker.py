@@ -13,9 +13,16 @@ class LabelMaker:
     #loca_db = dictionary of handles
     #filename = name of the file, str
     def __init__(self, filename):
-        with io.open("indices/loca_index.txt", mode="r", encoding="utf-8") as f:
-            self.loca_db = json.loads(f.read())
-            self.filename = filename
+        with io.open("indices/loca_index.txt", mode="r", encoding="utf-8") as l:
+            self.loca_db = json.loads(l.read())
+
+        with io.open("indices/flag_index.txt", mode="r", encoding="utf-8") as f:
+            self.flag_db = json.loads(f.read())
+
+        with io.open("indices/tag_index.txt", mode="r", encoding="utf-8") as t:
+            self.tag_db = json.loads(t.read())
+        
+        self.filename = filename
 
     def add_labels(self):
         print('Begin labeling', self.filename)
@@ -55,3 +62,5 @@ class LabelMaker:
 lm = LabelMaker('Karlach_InParty.lsx')
 
 lm.add_labels()
+
+# https://www.geeksforgeeks.org/python/python-loop-through-folders-and-files-in-directory/
