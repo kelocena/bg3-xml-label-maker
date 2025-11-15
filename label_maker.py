@@ -11,6 +11,9 @@ class CustomFormatter(Formatter):
 
 class LabelMaker:
     #loca_db = dictionary of handles
+    #flag_db = flags dictionary
+    #tag_db = tag dictionary
+
     #filename = name of the file, str
     def __init__(self, filename):
         with io.open("indices/loca_index.txt", mode="r", encoding="utf-8") as l:
@@ -25,25 +28,71 @@ class LabelMaker:
         self.filename = filename
 
     def add_labels(self):
-        print('Begin labeling', self.filename)
+        missing_labels = set()
+        print('Begin labeling...', self.filename)
 
         # EDIT the file prefix here
         filepath = 'resources/' + self.filename
         with io.open(filepath, mode="r", encoding="utf-8") as f:
             soup = BeautifulSoup(f, 'xml')
+
+            # label text handles
+            print('Labeling Text Handles...')
             for tagtext in soup.find_all(self.get_taggedtext):
                 handle = tagtext['handle']
-                eng_line = self.loca_db[handle]
+                eng_line = "Text Not Found"
 
-                new_comment = Comment(" " + eng_line + " ")
-                tagtext.insert_before(new_comment)
+                try:
+                    eng_line = self.loca_db[handle]
+                except:
+                    missing_labels.add(handle)
+
+                self.add_comment_label(tagtext, eng_line)
+
+            # label flags
+            print('Labeling Flags...')
+            for flag in soup.find_all(self.get_flag_nodes):
+                flag_uuid = flag.attribute['value']
+                flag_name = 'Flag Not Found'
+
+                try:
+                    flag_name = self.flag_db[flag_uuid]
+                except:
+                    try:
+                        flag_name = self.tag_db[flag_uuid]
+                    except:
+                        missing_labels.add(flag_uuid)
+
+                
+                self.add_comment_label(flag.attribute, flag_name)
+
+            # label tags
+            print('Labeling Tags...')
+            for tag in soup.find_all(self.get_tag_nodes):
+                tag_uuid = tag.attribute['value']
+                tag_name = 'Tag Not Found'
+
+                try:
+                    tag_name = self.tag_db[tag_uuid]
+                except:
+                    try:
+                        tag_name = self.flag_db[tag_uuid]
+                    except:
+                        missing_labels.add(tag_uuid)
+
+
+                self.add_comment_label(tag.attribute, tag_name)
             
+            print('Formatting results before saving.')
             formatter = CustomFormatter(indent=4)
             self.labeled_soup = soup.prettify(formatter=formatter)
 
-
         self.save_labeled_xml()
-        print(print('Finish labeling', self.filename))
+        print('Finish labeling!!', self.filename)
+
+        missing_count = len(missing_labels)
+        if missing_count > 0:
+            print(missing_count, 'IDs were unable to be identified :( \nLabels Missing:', missing_labels)
 
     def save_labeled_xml(self):
         
@@ -54,6 +103,16 @@ class LabelMaker:
 
     def get_taggedtext(self, tag):
         return tag.has_attr("handle") and tag.has_attr("type") and tag['type'] == "TranslatedString" and tag['id'] == "TagText"
+
+    def get_flag_nodes(self, tag):
+        return tag.has_attr('id') and tag['id'] == 'flag'
+
+    def get_tag_nodes(self, tag):
+        return tag.has_attr('id') and tag['id'] == 'Tag'
+
+    def add_comment_label(self, tag, label):
+        new_comment = Comment(" " + label + " ")
+        tag.insert_before(new_comment)
 
 
     # for tags and flags, they would be attributes of id=Tag and id=Flag respectively
