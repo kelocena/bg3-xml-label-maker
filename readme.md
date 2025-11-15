@@ -27,8 +27,8 @@ Short version: Pipenv allows you to manage different versions of various depende
 - Run `pipenv install` to install the project dependecies.
 
 All commands listed below assume you are running them in the pipenv shell!!
-### Making a loca index
-- Edit the file path to point to the loca you want to index in the file `build_indices.py`
+### Making an index
+- Edit the file path to point to the loca/flag/tag list you want to index in the file `build_indices.py`
     - Note the path is relative!
 - Run `python3 build_indices.py` in the pipenv shell
 
