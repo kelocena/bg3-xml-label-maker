@@ -40,7 +40,7 @@ class LabelMaker:
             print('Labeling Text Handles...')
             for tagtext in soup.find_all(self.get_taggedtext):
                 handle = tagtext['handle']
-                eng_line = "Text Not Found"
+                eng_line = "Handle Text Not Found"
 
                 try:
                     eng_line = self.loca_db[handle]
@@ -53,7 +53,7 @@ class LabelMaker:
             print('Labeling Flags...')
             for flag in soup.find_all(self.get_flag_nodes):
                 flag_uuid = flag.attribute['value']
-                flag_name = 'Flag Not Found'
+                flag_name = 'Flag Label Not Found'
 
                 try:
                     flag_name = self.flag_db[flag_uuid]
@@ -70,7 +70,7 @@ class LabelMaker:
             print('Labeling Tags...')
             for tag in soup.find_all(self.get_tag_nodes):
                 tag_uuid = tag.attribute['value']
-                tag_name = 'Tag Not Found'
+                tag_name = 'Tag Label Not Found'
 
                 try:
                     tag_name = self.tag_db[tag_uuid]
@@ -118,7 +118,7 @@ class LabelMaker:
     # for tags and flags, they would be attributes of id=Tag and id=Flag respectively
 
 # EDIT pass the file name in here
-lm = LabelMaker('Karlach_InParty.lsx')
+lm = LabelMaker('SHA_NightsongPrison_PAD_Prayer.lsx')
 
 lm.add_labels()
 
