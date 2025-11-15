@@ -115,10 +115,8 @@ class LabelMaker:
         tag.insert_before(new_comment)
 
 
-    # for tags and flags, they would be attributes of id=Tag and id=Flag respectively
-
 # EDIT pass the file name in here
-lm = LabelMaker('SHA_NightsongPrison_PAD_Prayer.lsx')
+lm = LabelMaker('Karlach_InParty.lsx')
 
 lm.add_labels()
 

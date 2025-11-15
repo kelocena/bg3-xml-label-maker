@@ -1,5 +1,6 @@
 import io
 import json
+import os
 from bs4 import BeautifulSoup
 
 def build_loca_index():
@@ -21,7 +22,7 @@ def build_loca_index():
 
     print('loca file indexed and written to indices/loca_index.txt as JSON')
 
-build_loca_index()
+# build_loca_index()
 
 # Check it worked
 def test_read():
@@ -29,22 +30,50 @@ def test_read():
         idx = json.loads(f.read())
         print(idx['fff32281-b937-22d0-b283-29e547cb2765'])
 
-test_read()
+# test_read()
 
 # functions to index the tags and flags
 
-def build_flag_index():
+def build_flag_tag_index():
     flag_index = {}
+    tag_index = {}
 
-    print('Building Flag index...')
-    with open("resources/flags_list.txt", mode="r", encoding="utf-8") as fl:
-        for f in fl:
-            (uuid, name) = separate_uuid_and_name(f)
+    for root, dirs, files in os.walk('../Multitool/UnpackedData'):
+        #Flags
+        if root.endswith('Flags') and not root.endswith('ScriptFlags'):
+            for flag in files:
+                print('Adding Flag', flag)
+                with io.open(os.path.join(root, flag), mode="r", encoding="utf-8") as f:
+                    soup = BeautifulSoup(f, 'xml')
 
-            flag_index[uuid] = name
+                    name = soup.find(id='Name')['value']
+                    uuid = soup.find(id='UUID')['value']
+
+                    flag_index[uuid] = name
+        
+        #Tags
+        if root.endswith('Tags'):
+            for tag in files:
+                print('Adding Tag', tag)
+                with io.open(os.path.join(root, tag), mode="r", encoding="utf-8") as f:
+                    soup = BeautifulSoup(f, 'xml')
+
+                    name = soup.find(id='Name')['value']
+                    uuid = soup.find(id='UUID')['value']
+
+                    tag_index[uuid] = name
     
+
     with open("indices/flag_index.txt",  mode="w", encoding="utf-8") as fi:
         fi.write(json.dumps(flag_index))
+
+    with open("indices/tag_index.txt",  mode="w", encoding="utf-8") as ti:
+        ti.write(json.dumps(tag_index))
+
+    print('Finish indexing Flags and Tags!!')
+
+build_flag_tag_index()
+
 
 def build_tag_index():
     tag_index = {}
@@ -67,5 +96,21 @@ def separate_uuid_and_name(flag):
 
     return (uuid, name)
 
-build_flag_index()
-build_tag_index()
+    # print('Building Flag index...')
+    # with open("resources/flags_list.txt", mode="r", encoding="utf-8") as fl:
+    #     for f in fl:
+    #         (uuid, name) = separate_uuid_and_name(f)
+
+    #         flag_index[uuid] = name
+    
+    # with open("indices/flag_index.txt",  mode="w", encoding="utf-8") as fi:
+    #     fi.write(json.dumps(flag_index))
+    
+# build_flag_index()
+# build_tag_index()
+
+# def get_flag_tag_name(tag):
+#     return tag.has_attr('id') and tag['id'] == 'Name'
+
+# def get_flag_tag_uuid(tag):
+#     return tag.has_attr('id') and tag['id'] == 'UUID'
