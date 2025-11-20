@@ -38,7 +38,7 @@ def build_flag_tag_index():
     flag_index = {}
     tag_index = {}
 
-    for root, dirs, files in os.walk('../Multitool/UnpackedData'):
+    for root, _, files in os.walk('../Multitool/UnpackedData'):
         #Flags
         if root.endswith('Flags') and not root.endswith('ScriptFlags'):
             for flag in files:
