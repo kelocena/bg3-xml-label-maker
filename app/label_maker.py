@@ -13,26 +13,33 @@ class LabelMaker:
     #loca_db = dictionary of handles
     #flag_db = flags dictionary
     #tag_db = tag dictionary
+    #missing_labels = set of ids
 
-    #filename = name of the file, str
-    def __init__(self, filename):
-        with io.open("indices/loca_index.txt", mode="r", encoding="utf-8") as l:
+    def __init__(self):
+        with io.open("app/indices/loca_index.txt", mode="r") as l:
             self.loca_db = json.loads(l.read())
 
-        with io.open("indices/flag_index.txt", mode="r", encoding="utf-8") as f:
+        with io.open("app/indices/flag_index.txt", mode="r", encoding="utf-8") as f:
             self.flag_db = json.loads(f.read())
 
-        with io.open("indices/tag_index.txt", mode="r", encoding="utf-8") as t:
+        with io.open("app/indices/tag_index.txt", mode="r", encoding="utf-8") as t:
             self.tag_db = json.loads(t.read())
-        
-        self.filename = filename
 
-    def add_labels(self):
-        missing_labels = set()
-        print('Begin labeling...', self.filename)
+        self.missing_labels = set()
 
-        # EDIT the file prefix here
-        filepath = 'resources/' + self.filename
+    def label_multiple(self, directory_path):
+        # traversee the folders then for each LSX one call add_labels
+        pass
+
+    def label_single(self, filepath, save_location):
+        print("🐍 File: app/label_maker.py | Line: 35 | label_multiple ~ save_location",save_location)
+        print("🐍 File: app/label_maker.py | Line: 35 | label_multiple ~ filepath",filepath)
+        self.add_labels_to_file(filepath, save_location)
+        self.print_missing_labels()
+
+    def add_labels_to_file(self, filepath, save_location):
+        print('Begin labeling...', filepath)
+
         with io.open(filepath, mode="r", encoding="utf-8") as f:
             soup = BeautifulSoup(f, 'xml')
 
@@ -45,7 +52,7 @@ class LabelMaker:
                 try:
                     eng_line = self.loca_db[handle]
                 except:
-                    missing_labels.add(handle)
+                    self.missing_labels.add(handle)
 
                 self.add_comment_label(tagtext, eng_line)
 
@@ -61,7 +68,7 @@ class LabelMaker:
                     try:
                         flag_name = self.tag_db[flag_uuid]
                     except:
-                        missing_labels.add(flag_uuid)
+                        self.missing_labels.add(flag_uuid)
 
                 
                 self.add_comment_label(flag.attribute, flag_name)
@@ -78,28 +85,27 @@ class LabelMaker:
                     try:
                         tag_name = self.flag_db[tag_uuid]
                     except:
-                        missing_labels.add(tag_uuid)
+                        self.missing_labels.add(tag_uuid)
 
 
                 self.add_comment_label(tag.attribute, tag_name)
             
             print('Formatting results before saving.')
             formatter = CustomFormatter(indent=4)
-            self.labeled_soup = soup.prettify(formatter=formatter)
+            labeled_soup = soup.prettify(formatter=formatter)
 
-        self.save_labeled_xml()
-        print('Finish labeling!!', self.filename)
+        self.save_labeled_xml(save_location, labeled_soup)
+        print('Finish labeling!!', save_location)
 
-        missing_count = len(missing_labels)
-        if missing_count > 0:
-            print(missing_count, 'IDs were unable to be identified :( \nLabels Missing:', missing_labels)
-
-    def save_labeled_xml(self):
-        
-        # EDIT the output path as desired
-        filepath = 'labeled/' + self.filename
+    def save_labeled_xml(self, filepath, labeled_soup):
         with open(filepath,  mode="w", encoding="utf-8") as f:
-            f.write(self.labeled_soup)
+            f.write(labeled_soup)
+
+    def print_missing_labels(self):
+        missing_count = len(self.missing_labels)
+        if missing_count > 0:
+            print(missing_count, 'Some IDs were unable to be identified :( \nLabels Missing:', self.missing_labels)
+        self.missing_labels = set()
 
     def get_taggedtext(self, tag):
         return tag.has_attr("handle") and tag.has_attr("type") and tag['type'] == "TranslatedString" and tag['id'] == "TagText"
@@ -114,10 +120,5 @@ class LabelMaker:
         new_comment = Comment(" " + label + " ")
         tag.insert_before(new_comment)
 
-
-# EDIT pass the file name in here
-lm = LabelMaker('Karlach_InParty.lsx')
-
-lm.add_labels()
 
 # https://www.geeksforgeeks.org/python/python-loop-through-folders-and-files-in-directory/
