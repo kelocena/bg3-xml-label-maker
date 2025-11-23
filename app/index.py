@@ -84,13 +84,13 @@ button_label_directory.grid(column=2,row=8, sticky=E)
 
 
 # exit button
-button_exit = Button(mainframe, 
-                     text = "Exit",
-                     command = exit,
-                     width=10)
+# button_exit = Button(mainframe, 
+#                      text = "Exit",
+#                      command = exit,
+#                      width=10)
 
 
-button_exit.grid(column=1, row=9)
+# button_exit.grid(column=1, row=9)
 
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)

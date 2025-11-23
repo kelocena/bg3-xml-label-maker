@@ -1,6 +1,7 @@
 import io
 import json
 import os
+import sys
 from bs4 import BeautifulSoup
 from bs4 import Comment
 from bs4 import Formatter
@@ -17,13 +18,22 @@ class LabelMaker:
     #missing_labels = set of ids
 
     def __init__(self):
-        with io.open("app/indices/loca_index.txt", mode="r") as l:
+        li_path = 'app/indices/loca_index.txt'
+        fi_path = 'app/indices/loca_index.txt'
+        ti_path = 'app/indices/tag_index.txt'
+
+        if getattr(sys, 'frozen', False):
+            li_path = os.path.join(sys._MEIPASS, li_path)
+            fi_path = os.path.join(sys._MEIPASS, fi_path)
+            ti_path = os.path.join(sys._MEIPASS, ti_path)
+
+        with io.open(li_path, mode="r", encoding="utf-8") as l:
             self.loca_db = json.loads(l.read())
 
-        with io.open("app/indices/flag_index.txt", mode="r", encoding="utf-8") as f:
+        with io.open(fi_path, mode="r", encoding="utf-8") as f:
             self.flag_db = json.loads(f.read())
 
-        with io.open("app/indices/tag_index.txt", mode="r", encoding="utf-8") as t:
+        with io.open(ti_path, mode="r", encoding="utf-8") as t:
             self.tag_db = json.loads(t.read())
 
         self.missing_labels = set()
