@@ -19,7 +19,7 @@ class LabelMaker:
 
     def __init__(self):
         li_path = 'app/indices/loca_index.txt'
-        fi_path = 'app/indices/loca_index.txt'
+        fi_path = 'app/indices/flag_index.txt'
         ti_path = 'app/indices/tag_index.txt'
 
         if getattr(sys, 'frozen', False):
@@ -54,6 +54,8 @@ class LabelMaker:
                         new_folders = os.path.join(save_directory, relpath)
                         os.makedirs(new_folders, exist_ok=True)
                         self.add_labels_to_file(filepath, savepath)
+        
+        self.print_missing_labels()
 
 
     def label_single(self, filepath, save_location):
@@ -121,13 +123,13 @@ class LabelMaker:
         print('Finish labeling!!', save_location)
 
     def save_labeled_xml(self, filepath, labeled_soup):
-        with open(filepath,  mode="w", encoding="utf-8") as f:
+        with io.open(filepath,  mode="w", encoding="utf-8") as f:
             f.write(labeled_soup)
 
     def print_missing_labels(self):
         missing_count = len(self.missing_labels)
         if missing_count > 0:
-            print(missing_count, 'Some IDs were unable to be identified :( \nLabels Missing:', self.missing_labels)
+            print(missing_count, 'IDs were unable to be identified :( \nLabels Missing:', self.missing_labels)
         self.missing_labels = set()
 
     def get_taggedtext(self, tag):
