@@ -1,5 +1,6 @@
 import io
 import json
+import os
 from bs4 import BeautifulSoup
 from bs4 import Comment
 from bs4 import Formatter
@@ -27,13 +28,25 @@ class LabelMaker:
 
         self.missing_labels = set()
 
-    def label_multiple(self, directory_path):
-        # traversee the folders then for each LSX one call add_labels
-        pass
+    def label_multiple(self, directory_path, save_directory):
+        for root, _, files in os.walk(directory_path):
+
+            relpath = os.path.relpath(root, start=directory_path)
+
+            for f in files:
+                if f.endswith('.lsx'):
+                    filepath = os.path.join(root, f)
+                    savepath = os.path.join(save_directory, f) if relpath == '.' else os.path.join(save_directory, relpath, f)
+
+                    try:
+                        self.add_labels_to_file(filepath, savepath)
+                    except FileNotFoundError:
+                        new_folders = os.path.join(save_directory, relpath)
+                        os.makedirs(new_folders, exist_ok=True)
+                        self.add_labels_to_file(filepath, savepath)
+
 
     def label_single(self, filepath, save_location):
-        print("🐍 File: app/label_maker.py | Line: 35 | label_multiple ~ save_location",save_location)
-        print("🐍 File: app/label_maker.py | Line: 35 | label_multiple ~ filepath",filepath)
         self.add_labels_to_file(filepath, save_location)
         self.print_missing_labels()
 
@@ -120,5 +133,6 @@ class LabelMaker:
         new_comment = Comment(" " + label + " ")
         tag.insert_before(new_comment)
 
-
+# lm = LabelMaker()
+# lm.label_multiple('resources', 'labeled')
 # https://www.geeksforgeeks.org/python/python-loop-through-folders-and-files-in-directory/
