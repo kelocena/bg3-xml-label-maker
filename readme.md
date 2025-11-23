@@ -15,8 +15,9 @@
 ## How to use:
 
 ### Windows:
-Download the latest release. Unzip the file and click the exe.
-PLEASE ONLY SELECT .LSX FILES IN SINGLE FILE SELECTION. I HAVEN'T ADDED PROPER ERROR HANDLING YET.
+Download the latest release. Unzip the file and click the exe extracted folder.
+
+PLEASE ONLY SELECT *.LSX* FILES IN SINGLE FILE SELECTION. I HAVEN'T ADDED PROPER ERROR HANDLING YET.
 
 ### Any OS:
 You will need to either clone the repo or download the ZIP of the codebase to use it.
