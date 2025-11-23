@@ -1,14 +1,15 @@
 # BG3 XML Dialogue Label Maker
 
-## This is a WIP!! It will get easier to use over time. Especially once it has GUI lol. But it's scuffed rn as I find time to finetune it.
+## This is a WIP!! It will get easier to use over time. But it's scuffed rn as I find time to finetune it.
 
 ### Current Script features:
 - Given a loca index and the lsx dialogue file, it will add the human-readable text to the lsx file above the tagtext!
-- It comes with the English loca already databased
-- If you would rather work with subtitles in another language, you can also extract that loca file and use the create_loca_db script to use that instead
+- It comes with the English loca, flags, and tags already databased
+- If you would rather work with subtitles in another language, you can also extract that loca file and use the build_indices script to use that instead
 
 ### Future goals:
-- Handle switching between multiple loca_dbs (for ppl writing custom dialogues) without having to re-index or keep editing the py file
+- Handle switching between multiple loca_dbs?? (for ppl writing custom dialogues) without having to re-index or keep editing the py file
+- And/or a way to expand the existing dbs with your new lines, flags, and tags.
 - Make GUI better
 - Error handling
 
@@ -17,7 +18,7 @@
 ### Windows:
 Download the latest release. Unzip the file and click the exe extracted folder.
 
-PLEASE ONLY SELECT *.LSX* FILES IN SINGLE FILE SELECTION. I HAVEN'T ADDED PROPER ERROR HANDLING YET.
+PLEASE ONLY SELECT **.LSX** FILES IN SINGLE FILE SELECTION. I HAVEN'T ADDED PROPER ERROR HANDLING YET.
 
 ### Any OS:
 You will need to either clone the repo or download the ZIP of the codebase to use it.
@@ -34,8 +35,7 @@ Short version: Pipenv allows you to manage different versions of various depende
 
 All commands listed below assume you are running them in the pipenv shell!!
 ### Making an index
-- Edit the file path to point to the loca/flag/tag list you want to index in the file `build_indices.py`
-    - Note the path is relative!
+- Edit the file path to point to the loca you want to index in the file `build_indices.py`
 - Run `python3 build_indices.py` in the pipenv shell
 
 ### Adding labels to your LSX

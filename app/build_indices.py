@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 def build_loca_index():
     loca_index = {}
 
-    # replace with the path to the loca file you wish to index
+    # EDIT replace with the path to the loca file you wish to index
     with io.open("resources/english.loca.xml", mode="r", encoding="utf-8") as eng:
 
         loca = BeautifulSoup(eng, 'xml')
@@ -22,7 +22,7 @@ def build_loca_index():
 
     print('loca file indexed and written to indices/loca_index.txt as JSON')
 
-# build_loca_index()
+build_loca_index()
 
 # Check it worked
 def test_read():
@@ -72,7 +72,7 @@ def build_flag_tag_index():
 
     print('Finish indexing Flags and Tags!!')
 
-build_flag_tag_index()
+# build_flag_tag_index()
 
 
 def build_tag_index():
