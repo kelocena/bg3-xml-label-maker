@@ -16,7 +16,7 @@
 ## How to use:
 
 ### Windows:
-Download the latest release. Unzip the file and click the exe extracted folder.
+[Download the latest release](https://github.com/kelocena/bg3-xml-label-maker/releases). Unzip the file and run the exe in the extracted folder.
 
 PLEASE ONLY SELECT **.LSX** FILES IN SINGLE FILE SELECTION. I HAVEN'T ADDED PROPER ERROR HANDLING YET.
 
