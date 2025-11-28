@@ -101,6 +101,7 @@ class LabelMaker:
             # label tags
             print('Labeling Tags...')
             for tag in soup.find_all(self.get_tag_nodes):
+                print("🐍 File: app/label_maker.py | Line: 106 | add_labels_to_file ~ tag",tag)
                 tag_uuid = tag.attribute['value']
                 tag_name = 'Tag Label Not Found'
 
@@ -139,7 +140,7 @@ class LabelMaker:
         return tag.has_attr('id') and tag['id'] == 'flag'
 
     def get_tag_nodes(self, tag):
-        return tag.has_attr('id') and tag['id'] == 'Tag'
+        return tag.name == 'node' and  tag.has_attr('id') and tag['id'] == 'Tag'
 
     def add_comment_label(self, tag, label):
         new_comment = Comment(" " + label + " ")

@@ -2,10 +2,10 @@
 
 
 a = Analysis(
-    ['app\\index.py'],
-    pathex=[],
+    ['app\\index.py'], # main file
+    pathex=[], # a list of paths to search for imports, i.e. 'app\\imports'
     binaries=[],
-    datas=[('app\\indices', 'app\\indices')],
+    datas=[('app\\indices', 'app\\indices')], # my non .py files ('src', 'dst in bundled app')
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

@@ -20,6 +20,7 @@ def select_save_directory():
     save_directory_path.set(filedialog.askdirectory(
         title='Choose a folder'
     ))
+
     
 def label_single():
     lm.label_single(filepath.get(), save_filepath.get())
